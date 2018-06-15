@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import MovieList from './MovieList'
 
 /*
 Display a list of movies where each movie contains a list of users that favorited it.
@@ -97,7 +98,23 @@ const movies = {
   },
 };
 
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.favList = {};
+
+    profiles.forEach(profile => {
+      const movieID = profile.favoriteMovieID;
+
+      if (this.favList[movieID]) {
+        this.favList[movieID].push(profile.userID);
+      } else {
+        this.favList[movieID] = [profile.userID];
+      }
+    });
+  }
+  
   render() {
     return (
       <div className="App">
@@ -106,6 +123,11 @@ class App extends Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>How Popular is Your Favorite Movie?</h2>
+      	<MovieList
+      	 users = {users}
+      	 movies = {movies}
+      	 favList = {this.favList}
+      	/>
       </div>
     );
   }
